@@ -8,6 +8,8 @@ import web.model.User;
 import java.util.List;
 
 @Service
+@Transactional// todo: используем @Transactional на все методы Hibernate.. тогда, проставляем - над классом
+                //todo: стоит разобраться с параметризированной @Transactional(...) https://www.baeldung.com/spring-transactions-read-only  например, 4.2
 public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
@@ -16,34 +18,29 @@ public class UserServiceImpl implements UserService {
         this.userDAO = userDAO;
     }
 
-    @Transactional
     @Override
     public List<User> getAll() {
         return userDAO.getAll();
     }
 
-    @Transactional
     @Override
     public void add(User user) {
         userDAO.add(user);
     }
 
-    @Transactional
     @Override
     public void update(User user) {
         userDAO.update(user);
     }
 
-    @Transactional
     @Override
     public User findUser(long id) {
         return userDAO.findUserById(id);
     }
 
-    @Transactional
     @Override
     public void delete(long id) {
         User user = userDAO.findUserById(id);
-        userDAO.delete(user);
+        userDAO.delete(user);//todo валидация (что произойдет.. если User-а с id нет)
     }
 }

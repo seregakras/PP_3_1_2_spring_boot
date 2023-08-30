@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("add-user")
     public String addUser(Model model) {
-        List<Sex> sexList = List.of(web.model.Sex.values());
+        List<Sex> sexList = List.of(web.model.Sex.values());//todo: используем List.. видимо предполагаем наличие 3-его sex-a :)
         model.addAttribute("sexList", sexList);
         return "addUser";
     }
