@@ -1,4 +1,4 @@
-package web.model;
+package org.serega.model;
 
 public enum Sex {
     MALE("мужской"),

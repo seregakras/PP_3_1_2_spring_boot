@@ -1,11 +1,12 @@
-package web.controller;
+package org.serega.controller;
 
+import org.serega.model.User;
+import org.serega.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.model.Sex;
-import web.model.User;
-import web.service.UserService;
+import org.serega.model.Sex;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -26,23 +27,30 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("{id}")
+    public String showUser(Model model, @PathVariable Long id) {
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "showUser";
+    }
+
     @GetMapping("add-user")
     public String addUser(Model model) {
-        List<Sex> sexList = List.of(web.model.Sex.values());//todo: используем List.. видимо предполагаем наличие 3-его sex-a :)
+        List<Sex> sexList = List.of(Sex.values());//todo: используем List.. видимо предполагаем наличие 3-его sex-a :)
         model.addAttribute("sexList", sexList);
         return "addUser";
     }
 
     @PostMapping("add-user")
     public String addUser(@ModelAttribute("user") User user) {
-        userService.add(user);
+        userService.create(user);
         return "redirect:/";
     }
 
     @GetMapping("update-user/{id}")
     public String updateUser(Model model, @PathVariable long id) {
-        List<Sex> sexList = List.of(web.model.Sex.values());
-        User user = userService.findUser(id);
+        List<Sex> sexList = List.of(Sex.values());
+        User user = userService.findById(id);
         model.addAttribute("sexList", sexList);
         model.addAttribute("user", user);
         return "updateUser";
@@ -58,6 +66,12 @@ public class UserController {
     public String deleteUser(@PathVariable long id) {
         userService.delete(id);
         return "redirect:/";
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public String handleException(Model model, NotFoundException e) {
+        model.addAttribute("message", e.getMessage());
+        return "error";
     }
 }
 
