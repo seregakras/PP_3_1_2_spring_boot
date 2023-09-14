@@ -21,7 +21,7 @@ public class User extends GenericModel {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + super.getId() +
+                "id=" + super.getId() +//todo: не увидел (IDE не видит..) метода .getId() от super
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", sex=" + sex +
